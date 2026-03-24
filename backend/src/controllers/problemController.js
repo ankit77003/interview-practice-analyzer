@@ -11,31 +11,43 @@ const createProblemSchema = z.object({
 });
 
 async function createProblem(req, res) {
-  const parsed = createProblemSchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: "Invalid input", details: parsed.error.flatten() });
+  try {
+    const parsed = createProblemSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: "Invalid input", details: parsed.error.flatten() });
 
-  const p = parsed.data;
-  const created = await prisma.problem.create({
-    data: {
-      userId: req.user.id,
-      title: p.title,
-      platform: p.platform,
-      difficulty: p.difficulty,
-      topic: p.topic,
-      timeTaken: p.time_taken,
-      status: p.status,
-    },
-  });
-  return res.status(201).json({ problem: created });
+    const p = parsed.data;
+    const created = await prisma.problem.create({
+      data: {
+        userId: req.user.id,
+        title: p.title,
+        platform: p.platform,
+        difficulty: p.difficulty,
+        topic: p.topic,
+        timeTaken: p.time_taken,
+        status: p.status,
+      },
+    });
+    return res.status(201).json({ problem: created });
+  } catch (err) {
+    console.error("Create problem error:", err);
+    if (err.code === "P2002") {
+      return res.status(409).json({ error: "Problem already exists" });
+    }
+    return res.status(500).json({ error: "Failed to create problem" });
+  }
 }
 
 async function listProblems(req, res) {
-  const problems = await prisma.problem.findMany({
-    where: { userId: req.user.id },
-    orderBy: { createdAt: "desc" },
-  });
-  return res.json({ problems });
+  try {
+    const problems = await prisma.problem.findMany({
+      where: { userId: req.user.id },
+      orderBy: { createdAt: "desc" },
+    });
+    return res.json({ problems });
+  } catch (err) {
+    console.error("List problems error:", err);
+    return res.status(500).json({ error: "Failed to fetch problems" });
+  }
 }
 
 module.exports = { createProblem, listProblems };
-
