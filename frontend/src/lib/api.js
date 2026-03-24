@@ -1,39 +1,33 @@
-import { getToken } from "./auth";
+// lib/api.js
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+// 🔹 Deployed backend URL
+const BASE_URL = "https://interview-practice-analyzer.onrender.com";
 
+/**
+ * Wrapper for fetch requests to backend
+ * @param {string} path - API path, e.g., "/api/auth/login"
+ * @param {object} options - fetch options (method, body, headers)
+ */
 export async function apiFetch(path, options = {}) {
-  const token = getToken();
-  const headers = new Headers(options.headers || {});
-  
-  // FIX: Only set content-type if body is a string (not FormData or other types)
-  if (!headers.has("content-type") && options.body && typeof options.body === "string") {
-    headers.set("content-type", "application/json");
-  }
-  
-  if (token) headers.set("authorization", `Bearer ${token}`);
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: options.method || "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    body: options.body ? options.body : undefined,
+  });
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
-  const text = await res.text();
-  
-  // FIX: Better handling of empty responses and JSON parsing
-  let data = null;
-  if (text) {
-    try {
-      data = JSON.parse(text);
-    } catch (parseError) {
-      console.error("Failed to parse JSON response:", parseError);
-      throw new Error("Invalid JSON response from server");
-    }
-  }
-
+  // Handle errors
   if (!res.ok) {
-    const message = data?.error || `Request failed (${res.status})`;
-    const err = new Error(message);
-    err.status = res.status;
-    err.data = data;
-    throw err;
+    let errData = {};
+    try {
+      errData = await res.json();
+    } catch (e) {
+      // ignore parsing errors
+    }
+    throw new Error(errData.error || res.statusText || "API error");
   }
-  
-  return data;
+
+  return res.json();
 }

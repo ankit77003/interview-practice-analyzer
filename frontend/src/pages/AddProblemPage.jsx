@@ -1,3 +1,4 @@
+// src/pages/AddProblemPage.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../lib/api";
@@ -60,9 +61,7 @@ export function AddProblemPage() {
             <label>Difficulty</label>
             <select value={form.difficulty} onChange={(e) => set("difficulty", e.target.value)} required>
               {DIFFICULTIES.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
+                <option key={d} value={d}>{d}</option>
               ))}
             </select>
           </div>
@@ -70,9 +69,7 @@ export function AddProblemPage() {
             <label>Status</label>
             <select value={form.status} onChange={(e) => set("status", e.target.value)} required>
               {STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
+                <option key={s} value={s}>{s}</option>
               ))}
             </select>
           </div>
@@ -101,9 +98,8 @@ export function AddProblemPage() {
           </div>
         </div>
 
-        {error ? <div className="error">{error}</div> : null}
+        {error && <div className="error">{error}</div>}
       </form>
     </div>
   );
 }
-

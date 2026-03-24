@@ -1,3 +1,4 @@
+// src/pages/LoginPage.js
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../lib/api";
@@ -48,7 +49,7 @@ export function LoginPage() {
           <label>Password</label>
           <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
         </div>
-        {error ? <div className="error">{error}</div> : null}
+        {error && <div className="error">{error}</div>}
         <button className="btn primary" disabled={busy} type="submit">
           {busy ? "Please wait..." : title}
         </button>
@@ -68,4 +69,3 @@ export function LoginPage() {
     </div>
   );
 }
-
