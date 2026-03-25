@@ -18,16 +18,29 @@ export function LoginPage() {
     e.preventDefault();
     setError("");
     setBusy(true);
+
     try {
       const path = mode === "login" ? "/api/auth/login" : "/api/auth/signup";
+
+      // Call backend API
       const data = await apiFetch(path, {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
-      setToken(data.token);
+
+      // 🔹 Store JWT token in localStorage so apiFetch can send it automatically
+      if (data.token) {
+        setToken(data.token); // lib/auth.js: must save to localStorage
+        console.log("Token saved:", localStorage.getItem("token"));
+      } else {
+        throw new Error("No token received from server");
+      }
+
+      // Navigate to dashboard after successful login/signup
       navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Something went wrong");
+      console.error("Login/Signup error:", err);
     } finally {
       setBusy(false);
     }
@@ -43,11 +56,21 @@ export function LoginPage() {
       <form onSubmit={onSubmit} className="row">
         <div className="field">
           <label>Email</label>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            required
+          />
         </div>
         <div className="field">
           <label>Password</label>
-          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            required
+          />
         </div>
         {error && <div className="error">{error}</div>}
         <button className="btn primary" disabled={busy} type="submit">
