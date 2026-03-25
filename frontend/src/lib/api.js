@@ -1,36 +1,25 @@
-// lib/api.js
+import { getToken, clearToken } from './auth';
 
-import { getToken } from "./auth";
+// Log API calls
+const logApiCall = (url) => {
+    console.log(`API call to: ${url}`);
+};
 
-// 🔹 Deployed backend URL
-const BASE_URL = "https://interview-practice-analyzer.onrender.com";
+// Validate token
+const isAuthenticated = () => {
+    const token = getToken();
+    return token != null;
+};
 
-/**
- * Wrapper for fetch requests to backend
- * @param {string} path - API path, e.g., "/api/auth/login"
- * @param {object} options - fetch options (method, body, headers)
- */
-export async function apiFetch(path, options = {}) {
-  const token = getToken(); // 👈 get token
+const handle401Error = (response) => {
+    if (response.status === 401) {
+        clearToken();
+        window.location = '/login';
+    }
+};
 
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method: options.method || "GET",
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }), // 👈 ADD THIS
-      ...(options.headers || {}),
-    },
-    body: options.body ? options.body : undefined,
-  });
+const improvedErrorMessages = (error) => {
+    return `Error: ${error.message || 'Something went wrong.'}`;
+};
 
-  if (!res.ok) {
-    let errData = {};
-    try {
-      errData = await res.json();
-    } catch (e) {}
-
-    throw new Error(errData.error || res.statusText || "API error");
-  }
-
-  return res.json();
-}
+export { logApiCall, isAuthenticated, handle401Error, improvedErrorMessages };
