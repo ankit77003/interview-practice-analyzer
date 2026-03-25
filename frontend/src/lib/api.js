@@ -1,5 +1,7 @@
 // lib/api.js
 
+import { getToken } from "./auth";
+
 // 🔹 Deployed backend URL
 const BASE_URL = "https://interview-practice-analyzer.onrender.com";
 
@@ -9,7 +11,7 @@ const BASE_URL = "https://interview-practice-analyzer.onrender.com";
  * @param {object} options - fetch options (method, body, headers)
  */
 export async function apiFetch(path, options = {}) {
-  const token = localStorage.getItem("ipa_token"); // 👈 get token
+  const token = getToken(); // 👈 get token
 
   const res = await fetch(`${BASE_URL}${path}`, {
     method: options.method || "GET",
