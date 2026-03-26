@@ -1,6 +1,29 @@
 # Interview Practice Analyzer
 
-Track DSA practice, identify weak topics, and get rule-based improvement suggestions.
+A full-stack web application that helps students track DSA progress, identify weak topics, and get personalized improvement suggestions based on their solving patterns.
+
+## Features
+
+- User authentication (JWT-based login/signup)
+- Add and track DSA problems
+- Filter by topic, difficulty, and platform
+- Track time taken per problem
+- Dashboard with analytics
+- Weak topic identification
+- Rule-based recommendations for improvement
+
+## How it works
+
+- Users log their solved/unsolved problems
+- System analyzes:
+  - Time taken
+  - Difficulty level
+  - Topic frequency
+- Generates insights like:
+  - Weak topics
+  - Slow problem-solving areas
+- Provides suggestions to improve performance
+
 
 ## Step-by-step generation
 
@@ -15,6 +38,34 @@ Track DSA practice, identify weak topics, and get rule-based improvement suggest
 - DB: PostgreSQL
 - ORM: Prisma
 - Auth: JWT
+
+## Challenges & Learnings
+
+- Implemented JWT authentication securely
+- Designed relational schema using Prisma
+- Built analytics logic for tracking performance
+- Handled state management in frontend
+- 
+
+## Future Improvements
+
+- AI-based feedback on answers
+- Interview simulation mode
+- Leaderboard system
+
+## Future Improvements
+
+- AI-based feedback on answers
+- Interview simulation mode
+- Leaderboard system
+
+## Screenshots
+
+<img width="1243" height="670" alt="Screenshot 2026-03-26 at 6 14 37 PM" src="https://github.com/user-attachments/assets/90f8d398-4655-4c94-84a1-67bb9c7a7f3e" />
+<img width="1247" height="674" alt="Screenshot 2026-03-26 at 6 16 09 PM" src="https://github.com/user-attachments/assets/c74b9c12-1c59-478d-8f62-49250ccf249b" />
+<img width="1169" height="330" alt="Screenshot 2026-03-26 at 6 16 24 PM" src="https://github.com/user-attachments/assets/9fe6a6ee-16df-40b4-841d-796fa3843faf" />
+<img width="1215" height="585" alt="Screenshot 2026-03-26 at 6 17 02 PM" src="https://github.com/user-attachments/assets/75de384a-17e9-40a0-9c57-59215ba7427e" />
+
 
 ## Setup
 
