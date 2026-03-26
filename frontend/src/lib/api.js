@@ -22,4 +22,30 @@ const improvedErrorMessages = (error) => {
     return `Error: ${error.message || 'Something went wrong.'}`;
 };
 
+export const apiFetch = async (url, options = {}) => {
+    logApiCall(url);
+
+    const token = getToken();
+
+    const headers = {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...options.headers,
+    };
+
+    const response = await fetch(url, {
+        ...options,
+        headers,
+    });
+
+    handle401Error(response);
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "API request failed");
+    }
+
+    return response.json();
+};
+
 export { logApiCall, isAuthenticated, handle401Error, improvedErrorMessages };
