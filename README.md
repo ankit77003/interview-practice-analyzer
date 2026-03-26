@@ -1,6 +1,12 @@
 # Interview Practice Analyzer
 
 A full-stack web application that helps students track DSA progress, identify weak topics, and get personalized improvement suggestions based on their solving patterns.
+> 🚀 Built with a focus on performance analytics and structured interview preparation.
+
+## Why this project?
+
+Many students solve DSA problems but fail to track patterns in their mistakes and performance.  
+This project helps convert raw practice into structured insights and actionable improvement plans.
 
 ## Features
 
@@ -25,7 +31,7 @@ A full-stack web application that helps students track DSA progress, identify we
 - Provides suggestions to improve performance
 
 
-## Step-by-step generation
+## Development Overview
 
 1. Folder structure ✅
 2. Backend (Express + PostgreSQL + Prisma + JWT) ✅
@@ -45,19 +51,14 @@ A full-stack web application that helps students track DSA progress, identify we
 - Designed relational schema using Prisma
 - Built analytics logic for tracking performance
 - Handled state management in frontend
-- 
+  
 
 ## Future Improvements
 
 - AI-based feedback on answers
 - Interview simulation mode
 - Leaderboard system
-
-## Future Improvements
-
-- AI-based feedback on answers
-- Interview simulation mode
-- Leaderboard system
+- Streak tracking (consistency Score)
 
 ## Screenshots
 
