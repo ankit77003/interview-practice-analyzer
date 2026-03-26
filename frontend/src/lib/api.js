@@ -1,6 +1,6 @@
 import { getToken, clearToken } from './auth';
 
-const API_BASE_URL = 'https://api.example.com'; // replace later with your real backend
+const API_BASE_URL = 'https://interview-practice-analyzer.onrender.com'; // replace later with your real backend
 
 const logApiCall = (url) => {
     console.log(`API call to: ${url}`);
