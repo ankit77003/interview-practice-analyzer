@@ -1,3 +1,7 @@
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![Node.js](https://img.shields.io/badge/Backend-Node.js-green)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
+
 # Interview Practice Analyzer
 
 A full-stack web application that helps students track DSA progress, identify weak topics, and get personalized improvement suggestions based on their solving patterns.
