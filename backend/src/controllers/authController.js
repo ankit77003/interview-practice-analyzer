@@ -23,7 +23,7 @@ function signToken(user) {
 async function signup(req, res) {
   try {
     const parsed = signupSchema.safeParse(req.body);
-    if (!parsed.success) return res.status(400).json({ error: "Invalid input", details: parsed.error.flatten() });
+    if (!parsed.success) return res.status(400).json({ error: "Invalid Input", details: parsed.error.flatten() });
 
     const { email, password } = parsed.data;
     const existing = await prisma.user.findUnique({ where: { email } });

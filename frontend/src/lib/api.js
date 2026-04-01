@@ -1,6 +1,6 @@
 import { getToken, clearToken } from './auth';
 
-const API_BASE_URL = 'https://interview-practice-analyzer.onrender.com'; // replace later with your real backend
+const API_BASE_URL = 'https://interview-practice-analyzer.onrender.com'; 
 
 const logApiCall = (url) => {
     console.log(`API call to: ${url}`);
@@ -34,7 +34,9 @@ export const apiFetch = async (endpoint, options = {}) => {
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || "API request failed");
+        throw new Error(errorData.message || 
+  errorData.error || 
+  "Invalid email or password");
     }
 
     return response.json();

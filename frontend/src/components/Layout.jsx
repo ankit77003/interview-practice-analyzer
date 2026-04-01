@@ -19,13 +19,11 @@ export function Layout({ children }) {
             <>
               <Link to="/dashboard">Dashboard</Link>
               <Link to="/add">Add Problem</Link>
-              <button className="btn danger" onClick={onLogout} type="button">
+              <button className="btn danger" id="logoutbtn" onClick={onLogout} type="button">
                 Logout
               </button>
             </>
-          ) : (
-            <Link to="/login">Login</Link>
-          )}
+          ) : ""}
         </div>
       </div>
       {children}

@@ -113,8 +113,8 @@ export function DashboardPage() {
       </div>
 
       <div className="grid cols-3">
-        <div className="card" style={{ gridColumn: "span 2" }}>
-          <div className="title" style={{ fontSize: 18 }}>
+        <div className="card" style={{ gridColumn: "span 2" ,width:"37rem"}}>
+          <div className="title" style={{ fontSize: 18}}>
             Topic breakdown
           </div>
           {dashboard.byTopic.length === 0 ? (
@@ -147,7 +147,7 @@ export function DashboardPage() {
         </div>
       </div>
 
-      <div className="card">
+      <div className="card last-card">
         <div className="title" style={{ fontSize: 18 }}>
           Recent entries
         </div>

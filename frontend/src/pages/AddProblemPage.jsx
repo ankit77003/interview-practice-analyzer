@@ -5,6 +5,7 @@ import { apiFetch } from "../lib/api";
 
 const DIFFICULTIES = ["EASY", "MEDIUM", "HARD"];
 const STATUSES = ["SOLVED", "UNSOLVED"];
+const PLATFORMS = ["LEETCODE", "GFG", "HACKERRANK", "CODECHEFS"];
 
 export function AddProblemPage() {
   const navigate = useNavigate();
@@ -49,27 +50,53 @@ export function AddProblemPage() {
       <form onSubmit={onSubmit} className="row">
         <div className="field">
           <label>Title</label>
-          <input value={form.title} onChange={(e) => set("title", e.target.value)} required />
+          <input
+            value={form.title}
+            onChange={(e) => set("title", e.target.value)}
+            required
+          />
         </div>
 
         <div className="grid cols-3">
           <div className="field">
             <label>Platform</label>
-            <input value={form.platform} onChange={(e) => set("platform", e.target.value)} required />
+            <select
+              value={form.platform}
+              onChange={(e) => set("platform", e.target.value)}
+              required
+            >
+              {PLATFORMS.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="field">
             <label>Difficulty</label>
-            <select value={form.difficulty} onChange={(e) => set("difficulty", e.target.value)} required>
+            <select
+              value={form.difficulty}
+              onChange={(e) => set("difficulty", e.target.value)}
+              required
+            >
               {DIFFICULTIES.map((d) => (
-                <option key={d} value={d}>{d}</option>
+                <option key={d} value={d}>
+                  {d}
+                </option>
               ))}
             </select>
           </div>
           <div className="field">
             <label>Status</label>
-            <select value={form.status} onChange={(e) => set("status", e.target.value)} required>
+            <select
+              value={form.status}
+              onChange={(e) => set("status", e.target.value)}
+              required
+            >
               {STATUSES.map((s) => (
-                <option key={s} value={s}>{s}</option>
+                <option key={s} value={s}>
+                  {s}
+                </option>
               ))}
             </select>
           </div>
@@ -78,7 +105,11 @@ export function AddProblemPage() {
         <div className="grid cols-3">
           <div className="field">
             <label>Topic</label>
-            <input value={form.topic} onChange={(e) => set("topic", e.target.value)} required />
+            <input
+              value={form.topic}
+              onChange={(e) => set("topic", e.target.value)}
+              required
+            />
           </div>
           <div className="field">
             <label>Time taken (minutes)</label>
@@ -92,7 +123,12 @@ export function AddProblemPage() {
           </div>
           <div className="field">
             <label>&nbsp;</label>
-            <button className="btn primary" disabled={busy} type="submit">
+            <button
+              className="btn primary "
+              id="save-btn"
+              disabled={busy}
+              type="submit"
+            >
               {busy ? "Saving..." : "Save"}
             </button>
           </div>

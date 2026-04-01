@@ -5,13 +5,22 @@ import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { AddProblemPage } from "./pages/AddProblemPage";
 import { isAuthed } from "./lib/auth";
+import { ToastContainer } from "react-toastify";
+
+
 
 export default function App() {
   return (
     <Layout>
+        <ToastContainer
+  position="top-center"
+  autoClose={3000}
+  theme="dark"
+/>
       <Routes>
         <Route path="/" element={<Navigate to={isAuthed() ? "/dashboard" : "/login"} replace />} />
         <Route path="/login" element={<LoginPage />} />
+
         <Route
           path="/dashboard"
           element={
