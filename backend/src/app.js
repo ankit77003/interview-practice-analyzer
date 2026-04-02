@@ -1,11 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-
+const passport=require("passport")
 const { authRoutes } = require("./routes/authRoutes");
 const { problemRoutes } = require("./routes/problemRoutes");
 const { analyticsRoutes } = require("./routes/analyticsRoutes");
+const session = require("express-session");
+
+require("./config/passport");
 
 const app = express();
+
+app.use(
+  session({
+    secret: "secretkey",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(cors({ origin: true }));
 app.use(express.json({ limit: "256kb" }));

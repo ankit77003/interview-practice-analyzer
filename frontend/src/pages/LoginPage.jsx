@@ -10,6 +10,8 @@ import {
   faEyeSlash,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
+import { faApple } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 export function LoginPage() {
   const [password, setPassword] = useState("");
@@ -78,7 +80,6 @@ export function LoginPage() {
             <div className="field input-wrapper">
               <div className="password-wrapper">
                 <label style={{ color: "white" }}>Email</label>
-                <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
 
                 <input
                   value={email}
@@ -86,6 +87,11 @@ export function LoginPage() {
                   type="email"
                   required
                   placeholder="Enter you email"
+                />
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  className="input-icon"
+                  id="env-icon"
                 />
               </div>
             </div>
@@ -99,7 +105,7 @@ export function LoginPage() {
                   placeholder="Enter your password"
                   required
                 />
-                <span 
+                <span
                   className="eye-icon"
                   onClick={() => setShowPassword(!showPassword)}
                 >
@@ -137,14 +143,24 @@ export function LoginPage() {
           </div>
           <div className="or-divider">OR</div>
           <div className="login-box">
-            <div className="login-other" id="login-1">
-              {/* <span style={{backgroundColor:"green"}}><FontAwesomeIcon icon={faApple} className="input-icon" /></span> */}
+            <div className="login-other" id="login-1"
+            onClick={()=>{
+               window.location.href = "http://localhost:5000/api/auth/apple";
+            }}
+            >
+              <span id="apple-logo">
+                <FontAwesomeIcon icon={faApple} className="input-icon" />
+              </span>
               <span>Log in with Apple</span>
             </div>
           </div>
           <div className="login-box">
-            <div className="login-other" id="login-2">
-              {/* <FontAwesomeIcon icon={faGoogle} className="input-icon" /> */}
+            <div className="login-other" id="login-2"
+            onClick={()=>{
+               window.location.href = "http://localhost:5000/api/auth/google";
+            }}
+            >
+              <span id="a">G</span>
               <span>Log in with Google</span>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { AddProblemPage } from "./pages/AddProblemPage";
 import { isAuthed } from "./lib/auth";
 import { ToastContainer } from "react-toastify";
-
+import { OAuthSuccess } from "./pages/OAuthSuccess";
 
 
 export default function App() {
@@ -20,7 +20,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to={isAuthed() ? "/dashboard" : "/login"} replace />} />
         <Route path="/login" element={<LoginPage />} />
-
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route
           path="/dashboard"
           element={

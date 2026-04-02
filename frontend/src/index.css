@@ -221,10 +221,7 @@ margin-bottom: 8px;
   pointer-events: none;
   font-size: 16px;
 }
-.input-icon{
-  margin-left: 17rem;
-  margin-top: 7px;
-}
+
 
 .input-wrapper input {
   width: 100%;
@@ -258,33 +255,31 @@ margin-bottom: 8px;
   margin-left: 10px; /* space between line and text */
 }
 .login-other{
+  
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
   height: 5vh;
-width: 100%;
+
   border-radius: 35px;
   margin-bottom: 12px;
 }
 #login-1{
-background-color: #000000;
+background-color: #FFFFFF;
+color: #000000;
 }
 #login-2{
-  background-color: #fff;
-  color: #000000;
+  background-color:#000000;
+  color: #cdc8c8;
   
 }
-#login-1,#login-2{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight:bold;
-  border-radius: 35px;
-}
+
 .login-other {
   display: flex;
   align-items: center; /* vertically center icon and text */
-  gap: 4px;           /* space between icon and text */
+  align-items: center;
+  /* space between icon and text */
   /* padding: 5px 6px; */
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -294,14 +289,12 @@ background-color: #000000;
  
 }
 .login-box {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* space between buttons */
+
   margin-top: 16px;
 }
 #login-1:hover{
   background-color: #fff;
-  color: #000000;
+  color: #5d5757;
 
 }
 #login-2:hover{
@@ -309,7 +302,14 @@ background-color: #000000;
   background-color: #000000;
 
 }
+#env-icon{
+  margin-left: 40vh;
+  margin-top: 8px;
+  font-size: large;
+ 
+}
 .forgot-password{
+  margin-left: 13rem;
   font-size: small;
 }
 .field{
@@ -331,15 +331,39 @@ background-color: #000000;
 #show-password input{
   width: 41vh;
   border: none;
+  outline: none;
 
 }
+
 
 .eye-icon{
   color: #000000;
   
-  margin-left: 8px;
 
 }
+
+.eye-icon:hover{
+  cursor: pointer;
+}
+#apple-logo{
+  font-size: 20px;
+}
+#a {
+  background: conic-gradient(
+    #4285F4 0deg,
+    #DB4437 90deg,
+    #F4B400 180deg,
+    #0F9D58 270deg,
+    #4285F4 360deg
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  font-weight: 900;
+  font-size: 22px;
+}
+
 
  
 
