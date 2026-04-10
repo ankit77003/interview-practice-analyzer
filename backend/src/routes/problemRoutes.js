@@ -8,5 +8,5 @@ router.use(requireAuth);
 router.get("/", listProblems);
 router.post("/", createProblem);
 
-module.exports = { problemRoutes: router };
+module.exports = router;
 

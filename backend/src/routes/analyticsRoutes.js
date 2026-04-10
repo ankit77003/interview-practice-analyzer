@@ -9,5 +9,5 @@ router.get("/dashboard", dashboard);
 router.get("/", analytics);
 router.get("/recommendations", recommendations);
 
-module.exports = { analyticsRoutes: router };
+module.exports = router;
 

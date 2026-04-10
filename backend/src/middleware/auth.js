@@ -1,38 +1,47 @@
 const jwt = require("jsonwebtoken");
 
-/**
- * Middleware to verify JWT token in Authorization header
- * Expected format: "Authorization: Bearer <token>"
- */
 function requireAuth(req, res, next) {
-  const header = req.header("authorization") || "";
-  const [scheme, token] = header.split(" ");
-
-  // ✅ Validate Authorization scheme and token
-  if (scheme !== "Bearer" || !token) {
-    console.error("❌ Missing or invalid Authorization header:", { scheme, hasToken: !!token });
-    return res.status(401).json({ 
-      error: "Missing or invalid Authorization header. Expected: 'Authorization: Bearer <token>'" 
-    });
-  }
-
   try {
-    // ✅ Verify JWT token using secret
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("✅ Token verified for user:", payload.email);
-    
-    // Attach user info to request
-    req.user = { id: payload.sub, email: payload.email };
-    return next();
-  } catch (err) {
-    console.error("❌ Token verification failed:", err.message);
-    
-    // ✅ Distinguish between expired and invalid tokens
-    if (err.name === "TokenExpiredError") {
-      return res.status(401).json({ error: "Token has expired. Please login again." });
+    const header = req.headers.authorization || "";
+
+    console.log("🔐 Auth Header:", header);
+
+    const [scheme, token] = header.split(" ");
+
+    if (scheme !== "Bearer" || !token) {
+      return res.status(401).json({
+        error: "Missing or invalid Authorization header",
+      });
     }
-    
-    return res.status(401).json({ error: "Invalid or expired token" });
+
+    const JWT_SECRET = process.env.JWT_SECRET;
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET not set in environment");
+    }
+
+    console.log("🔑 Token:", token);
+
+    const payload = jwt.verify(token, JWT_SECRET);
+
+    console.log("✅ Verified user:", payload.email);
+
+    req.user = {
+      id: payload.id || payload.sub,
+      email: payload.email,
+      name: payload.name,
+    };
+
+    next();
+  } catch (err) {
+    console.error("❌ Auth error:", err.message);
+
+    return res.status(401).json({
+      error:
+        err.name === "TokenExpiredError"
+          ? "Token expired"
+          : "Invalid token",
+    });
   }
 }
 

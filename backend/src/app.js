@@ -1,12 +1,13 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const passport=require("passport")
-const { authRoutes } = require("./routes/authRoutes");
-const { problemRoutes } = require("./routes/problemRoutes");
-const { analyticsRoutes } = require("./routes/analyticsRoutes");
+const  authRoutes  = require("./routes/authRoutes");
+const problemRoutes  = require("./routes/problemRoutes");
+const analyticsRoutes  = require("./routes/analyticsRoutes");
 const session = require("express-session");
 
-require("./config/passport");
+require('./config/passport');
 
 const app = express();
 

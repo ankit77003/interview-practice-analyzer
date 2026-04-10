@@ -1,5 +1,5 @@
 // src/pages/LoginPage.js
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../lib/api";
 import { setToken } from "../lib/auth";
@@ -11,7 +11,6 @@ import {
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import { faApple } from "@fortawesome/free-brands-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 export function LoginPage() {
   const [password, setPassword] = useState("");
@@ -21,6 +20,21 @@ export function LoginPage() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+
+  // 🔹 Handle token from OAuth redirect
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (token) {
+    setToken(token);
+
+    // 🔥 remove token from URL
+    window.history.replaceState({}, document.title, "/login");
+
+    navigate("/dashboard");
+  }
+}, [navigate]);
 
   const title = useMemo(
     () => (mode === "login" ? "Login" : "Create account"),
@@ -35,25 +49,22 @@ export function LoginPage() {
     try {
       const path = mode === "login" ? "/api/auth/login" : "/api/auth/signup";
 
-      // Call backend API
       const data = await apiFetch(path, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-      });
-      console.log("DATA:", data);
+  method: "POST",
+  body: JSON.stringify({ email, password }),
+});
 
-      // 🔹 Store JWT token in localStorage so apiFetch can send it automatically
+console.log("LOGIN RESPONSE:", data); // 🔥 ADD THIS
+
       if (!data.token) {
-        toast.error(
-          data?.error || data?.message || "Invalid email or password",
-        );
+        toast.error(data?.error || data?.message || "Invalid email or password");
         return;
       }
-      setToken(data.token);
+
+      setToken(data.token); // store JWT in localStorage
       navigate("/dashboard");
     } catch (err) {
       console.log("ERROR:", err);
-
       toast.error(err?.message || err?.error || "Invalid email or password");
     } finally {
       setBusy(false);
@@ -63,38 +74,27 @@ export function LoginPage() {
   return (
     <div className="wrapper">
       <div className="outerContainer">
-        <div
-          className="card"
-          style={{ backgroundColor: "#27272A", transform: "none" }}
-        >
-          <div className="title" style={{ color: "white" }}>
-            {title}
-          </div>
+        <div className="card" style={{ backgroundColor: "#27272A", transform: "none" }}>
+          <div className="title" style={{ color: "white" }}>{title}</div>
           <div className="muted" style={{ marginBottom: 14, color: "#fff" }}>
-            {mode === "login"
-              ? "We Are Happy To See You Again"
-              : "Password must be at least 8 characters."}
+            {mode === "login" ? "We Are Happy To See You Again" : "Password must be at least 8 characters."}
           </div>
 
           <form onSubmit={onSubmit} className="row">
             <div className="field input-wrapper">
               <div className="password-wrapper">
                 <label style={{ color: "white" }}>Email</label>
-
-                <input
+                <input 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   required
-                  placeholder="Enter you email"
+                  placeholder="Enter your email"
                 />
-                <FontAwesomeIcon
-                  icon={faEnvelope}
-                  className="input-icon"
-                  id="env-icon"
-                />
+                <FontAwesomeIcon icon={faEnvelope} className="input-icon" id="env-icon" />
               </div>
             </div>
+
             <div className="field input-wrapper">
               <label style={{ color: "white" }}>Password</label>
               <div className="password-wrapper" id="show-password">
@@ -105,18 +105,18 @@ export function LoginPage() {
                   placeholder="Enter your password"
                   required
                 />
-                <span
-                  className="eye-icon"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                 </span>
               </div>
             </div>
+
             <div className="forgot-password">
               <a href="">Forgot Password</a>
             </div>
+
             {error && <div className="error">{error}</div>}
+
             <button className="btn primary" disabled={busy} type="submit">
               {busy ? "Please wait..." : title}
             </button>
@@ -124,29 +124,26 @@ export function LoginPage() {
 
           <div className="muted" style={{ marginTop: 12 }}>
             {mode === "login" ? (
-              <button
-                className="btn"
-                onClick={() => setMode("signup")}
-                type="button"
-              >
+              <button className="btn" onClick={() => setMode("signup")} type="button">
                 Need an account? Sign up
               </button>
             ) : (
-              <button
-                className="btn"
-                onClick={() => setMode("login")}
-                type="button"
-              >
+              <button className="btn" onClick={() => setMode("login")} type="button">
                 Have an account? Login
               </button>
             )}
           </div>
+
           <div className="or-divider">OR</div>
+
+          {/* Apple Login */}
           <div className="login-box">
-            <div className="login-other" id="login-1"
-            onClick={()=>{
-               window.location.href = "http://localhost:5000/api/auth/apple";
-            }}
+            <div
+              className="login-other"
+              id="login-1"
+              onClick={() => {
+                window.location.href = "http://localhost:4000/api/auth/apple";
+              }}
             >
               <span id="apple-logo">
                 <FontAwesomeIcon icon={faApple} className="input-icon" />
@@ -154,11 +151,15 @@ export function LoginPage() {
               <span>Log in with Apple</span>
             </div>
           </div>
+
+          {/* Google Login */}
           <div className="login-box">
-            <div className="login-other" id="login-2"
-            onClick={()=>{
-               window.location.href = "http://localhost:5000/api/auth/google";
-            }}
+            <div
+              className="login-other"
+              id="login-2"
+              onClick={() => {
+                window.location.href = "http://localhost:4000/api/auth/google";
+              }}
             >
               <span id="a">G</span>
               <span>Log in with Google</span>

@@ -1,58 +1,83 @@
+// backend/routes/auth.js
 const express = require("express");
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
+
 const { signup, login } = require("../controllers/authController");
-const { session } = require("passport");
-const jwt=require("jsonwebtech");
+
 const router = express.Router();
 
+// 🔐 Create JWT helper
 function createJWT(user) {
   return jwt.sign(
-    { id: user.id, email: user.email },
-    "replace_me_with_a_long_random_string", 
-    { expiresIn: "1d" }
+    {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    },
+    process.env.JWT_SECRET || "mysecretkey123", // ⚠️ use env in production
+    { expiresIn: "7d" }
   );
 }
 
+// ==========================
+// 🔹 Normal Auth
+// ==========================
 router.post("/signup", signup);
 router.post("/login", login);
 
-// 🔥 Google Auth
+// ==========================
+// 🔥 Google OAuth
+// ==========================
+
+// Step 1: Redirect to Google
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
+// Step 2: Callback from Google
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    session:false,
-    failureRedirect: "/login",
+    session: false,
+    failureRedirect: "http://localhost:5173/login",
   }),
   (req, res) => {
-    // 🔥 1. Create JWT (you must have this function)
+    console.log("Google User:", req.user); // Debug
     const token = createJWT(req.user);
 
-    // 🔥 2. Redirect to frontend
-    res.redirect(`http://localhost:3000/oauth-success?token=${token}`);
+    // Redirect to frontend with token in query
+    res.redirect(`http://localhost:5173/login?token=${token}`);
   }
 );
 
-// 🍎 Apple Auth
-router.get("/apple", passport.authenticate("apple"));
+// ==========================
+// 🍎 Apple OAuth
+// ==========================
 
+// Step 1: Redirect to Apple
+router.get(
+  "/apple",
+  passport.authenticate("apple", { scope: ["name", "email"] })
+);
+
+// Step 2: Callback from Apple
 router.post(
   "/apple/callback",
   passport.authenticate("apple", {
     session: false,
-    failureRedirect: "/login",
+    failureRedirect: "http://localhost:5173/login",
   }),
   (req, res) => {
     const token = createJWT(req.user);
 
-    res.redirect(`http://localhost:3000/oauth-success?token=${token}`);
+    // Redirect to frontend with token
+    res.redirect(`http://localhost:5173/login?token=${token}`);
   }
 );
 
-module.exports = { authRoutes: router };
-
-
-
+// ==========================
+// ✅ EXPORT
+// ==========================
+module.exports = router;
