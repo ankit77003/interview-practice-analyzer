@@ -2,6 +2,7 @@
 const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const { prisma } = require("../prismaClient");
 
 const { signup, login } = require("../controllers/authController");
 
@@ -43,12 +44,30 @@ router.get(
     session: false,
     failureRedirect: "http://localhost:5173/login",
   }),
-  (req, res) => {
-    console.log("Google User:", req.user); // Debug
-    const token = createJWT(req.user);
+  async (req, res) => {
+    try {
+      let user = await prisma.user.findUnique({
+        where: { email: req.user.email },
+      });
 
-    // Redirect to frontend with token in query
-    res.redirect(`http://localhost:5173/login?token=${token}`);
+      // 🔥 CREATE USER IF NOT EXISTS
+      if (!user) {
+        user = await prisma.user.create({
+          data: {
+            email: req.user.email,
+            passwordHash: "oauth", // dummy
+          },
+        });
+      }
+
+      const token = createJWT(user);
+
+      res.redirect(`http://localhost:5173/login?token=${token}`);
+
+    } catch (err) {
+      console.error("OAuth error:", err);
+      res.redirect("http://localhost:5173/login");
+    }
   }
 );
 

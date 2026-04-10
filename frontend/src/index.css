@@ -325,6 +325,7 @@ color: #000000;
   background-color:rgb(96, 96, 240);
   border: none;
   border-radius: 12px;
+  width: 85px;
 }
 #show-password{
   border-radius: 15px;

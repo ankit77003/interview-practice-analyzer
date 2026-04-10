@@ -12,16 +12,30 @@ const createProblemSchema = z.object({
 
 async function createProblem(req, res) {
   try {
-    console.log("📝 Request body received:", req.body); // ✅ ADD THIS
-    console.log("👤 User ID:", req.user?.id); // ✅ ADD THIS
+    console.log("📝 Request body:", req.body);
+    console.log("👤 User:", req.user);
 
-    const parsed = createProblemSchema.safeParse(req.body);
+    // 🔥 Ensure user exists
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    // 🔥 Convert time_taken safely
+    const parsed = createProblemSchema.safeParse({
+      ...req.body,
+      time_taken: Number(req.body.time_taken),
+    });
+
     if (!parsed.success) {
-      console.log("❌ Validation failed:", parsed.error.flatten()); // ✅ ADD THIS
-      return res.status(400).json({ error: "Invalid input", details: parsed.error.flatten() });
+      console.log("❌ Validation error:", parsed.error.flatten());
+      return res.status(400).json({
+        error: "Invalid input",
+        details: parsed.error.flatten(),
+      });
     }
 
     const p = parsed.data;
+
     const created = await prisma.problem.create({
       data: {
         userId: req.user.id,
@@ -33,23 +47,36 @@ async function createProblem(req, res) {
         status: p.status,
       },
     });
+
     return res.status(201).json({ problem: created });
+
   } catch (err) {
-    console.error("Create problem error:", err);
+    console.error("🔥 Create problem error FULL:", err);
+
     if (err.code === "P2002") {
       return res.status(409).json({ error: "Problem already exists" });
     }
-    return res.status(500).json({ error: "Failed to create problem" });
+
+    return res.status(500).json({
+      error: "Failed to create problem",
+      debug: err.message, // 👈 helps debugging
+    });
   }
 }
 
 async function listProblems(req, res) {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
     const problems = await prisma.problem.findMany({
       where: { userId: req.user.id },
       orderBy: { createdAt: "desc" },
     });
+
     return res.json({ problems });
+
   } catch (err) {
     console.error("List problems error:", err);
     return res.status(500).json({ error: "Failed to fetch problems" });

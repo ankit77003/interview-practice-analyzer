@@ -14,29 +14,25 @@ function requireAuth(req, res, next) {
       });
     }
 
-    const JWT_SECRET = process.env.JWT_SECRET;
-
-    if (!JWT_SECRET) {
-      throw new Error("JWT_SECRET not set in environment");
-    }
-
-    console.log("🔑 Token:", token);
+    const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey123";
 
     const payload = jwt.verify(token, JWT_SECRET);
 
-    console.log("✅ Verified payload:", JSON.stringify(payload));
-    console.log("📍 payload.id:", payload.id);
-    console.log("📍 payload.sub:", payload.sub);
-    console.log("📍 payload.email:", payload.email);
+    console.log("✅ Verified payload:", payload);
+
+    if (!payload.id) {
+      return res.status(401).json({
+        error: "Invalid token payload (missing id)",
+      });
+    }
 
     req.user = {
-      id: payload.id || payload.sub,
+      id: payload.id,
       email: payload.email,
       name: payload.name,
     };
 
-    console.log("👤 req.user.id set to:", req.user.id);
-    console.log("👤 req.user object:", JSON.stringify(req.user));
+    console.log("👤 req.user:", req.user);
 
     next();
   } catch (err) {
