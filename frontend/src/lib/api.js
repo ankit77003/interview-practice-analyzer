@@ -7,8 +7,8 @@ const logApiCall = (url) => {
   console.log(`API call to: ${url}`);
 };
 
-const handle401Error = async (response) => {
-  if (response.status === 401) {
+const handle401Error = async (response, url) => {
+  if (response.status === 401 && !url.includes('/api/auth/login') && !url.includes('/api/auth/signup')) {
     console.warn("401 Unauthorized detected");
     clearToken();
     window.location.href = "/login";
@@ -29,7 +29,7 @@ export const apiFetch = async (endpoint, options = {}) => {
 
   const response = await fetch(url, { ...options, headers });
 
-  handle401Error(response);
+  handle401Error(response, url);
 
   const text = await response.text();
 

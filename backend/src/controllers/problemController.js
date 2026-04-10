@@ -12,8 +12,14 @@ const createProblemSchema = z.object({
 
 async function createProblem(req, res) {
   try {
+    console.log("📝 Request body received:", req.body); // ✅ ADD THIS
+    console.log("👤 User ID:", req.user?.id); // ✅ ADD THIS
+
     const parsed = createProblemSchema.safeParse(req.body);
-    if (!parsed.success) return res.status(400).json({ error: "Invalid input", details: parsed.error.flatten() });
+    if (!parsed.success) {
+      console.log("❌ Validation failed:", parsed.error.flatten()); // ✅ ADD THIS
+      return res.status(400).json({ error: "Invalid input", details: parsed.error.flatten() });
+    }
 
     const p = parsed.data;
     const created = await prisma.problem.create({

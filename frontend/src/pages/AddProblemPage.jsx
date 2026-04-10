@@ -1,4 +1,3 @@
-//ƒ src/pages/AddProblemPage.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../lib/api";
@@ -11,7 +10,7 @@ export function AddProblemPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     title: "",
-    platform: "LeetCode",
+    platform: "LEETCODE", 
     difficulty: "EASY",
     topic: "Arrays",
     time_taken: 0,

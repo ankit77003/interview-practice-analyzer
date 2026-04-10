@@ -24,13 +24,19 @@ function requireAuth(req, res, next) {
 
     const payload = jwt.verify(token, JWT_SECRET);
 
-    console.log("✅ Verified user:", payload.email);
+    console.log("✅ Verified payload:", JSON.stringify(payload));
+    console.log("📍 payload.id:", payload.id);
+    console.log("📍 payload.sub:", payload.sub);
+    console.log("📍 payload.email:", payload.email);
 
     req.user = {
       id: payload.id || payload.sub,
       email: payload.email,
       name: payload.name,
     };
+
+    console.log("👤 req.user.id set to:", req.user.id);
+    console.log("👤 req.user object:", JSON.stringify(req.user));
 
     next();
   } catch (err) {

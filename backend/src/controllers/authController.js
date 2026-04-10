@@ -14,10 +14,16 @@ const loginSchema = z.object({
 });
 
 function signToken(user) {
-  return jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-    subject: user.id,
-    expiresIn: "7d",
-  });
+  console.log("🔐 Creating token for user ID:", user.id);
+  
+  const token = jwt.sign(
+    { id: user.id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+  
+  console.log("✅ Token created successfully");
+  return token;
 }
 
 async function signup(req, res) {
