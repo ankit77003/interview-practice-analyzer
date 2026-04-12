@@ -37,9 +37,41 @@ This project helps convert raw practice into structured insights and actionable 
 
 ## Development Overview
 
-1. Folder structure ✅
-2. Backend (Express + PostgreSQL + Prisma + JWT) ✅
-3. Frontend (React pages: Login, Dashboard, Add Problem) ✅
+## 📁 Project Structure
+
+```
+interview-practice-analyzer/
+│
+├── backend/                          # Backend (Node.js + Express + Prisma)
+│   ├── src/
+│   │   ├── config/                   # DB & environment configs
+│   │   ├── controllers/              # Handles request & response logic
+│   │   ├── middlewares/              # Auth & error handling
+│   │   ├── routes/                   # API route definitions
+│   │   └── server.js                 # Entry point
+│   │
+│   ├── prisma/
+│   │   └── schema.prisma             # Database schema
+│   │
+│   ├── .env                          # Environment variables
+│   └── package.json
+│
+├── frontend/                         # Frontend (React)
+│   ├── src/
+│   │   ├── components/               # Reusable UI components
+│   │   ├── pages/                    # Pages (Login, Dashboard, Add Problem)
+│   │   ├── services/                 # API calls
+│   │   ├── context/                  # Global state (Auth)
+│   │   ├── hooks/                    # Custom hooks
+│   │   ├── utils/                    # Constants/helpers
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   └── package.json
+│
+└── README.md
+```
+
 
 ## Tech
 
