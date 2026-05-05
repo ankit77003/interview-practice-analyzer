@@ -33,7 +33,6 @@ This project helps convert raw practice into structured insights and actionable 
   - Weak topics
   - Slow problem-solving areas
 - Provides suggestions to improve performance
-  <img width="482" height="627" alt="Screenshot 2026-05-05 at 4 35 32 PM" src="https://github.com/user-attachments/assets/d36d3505-1465-4280-988a-387cf92526e4" />
 
 
 ## 📁 Folder Structure
@@ -105,6 +104,8 @@ interview-practice-analyzer/
 - Streak tracking (consistency Score)
 
 ## Screenshots
+
+<img width="482" height="627" alt="Screenshot 2026-05-05 at 4 35 32 PM" src="https://github.com/user-attachments/assets/d36d3505-1465-4280-988a-387cf92526e4" />
 
 <img width="546" height="627" alt="Screenshot 2026-05-05 at 4 36 11 PM" src="https://github.com/user-attachments/assets/4dc69885-a8be-4691-ab81-6c66897a0e85" />
 
