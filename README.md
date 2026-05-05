@@ -111,17 +111,14 @@ interview-practice-analyzer/
 <br>
 
 ### Dashboard
-<img width="546" height="627" alt="Screenshot 2026-05-05 at 4 36 11 PM" src="https://github.com/user-attachments/assets/4dc69885-a8be-4691-ab81-6c66897a0e85" />
-
-<br>
 
 <img width="1218" height="661" alt="Screenshot 2026-05-05 at 4 36 31 PM" src="https://github.com/user-attachments/assets/33381d3f-c017-49d2-ab90-ef73cac9652c" />
 
-<br>
+
 
 <img width="1059" height="668" alt="Screenshot 2026-05-05 at 4 36 39 PM" src="https://github.com/user-attachments/assets/74a4cd6d-a1ed-4184-88df-a8c6968b0d20" />
 
-<br>
+
 
 <img width="1022" height="608" alt="Screenshot 2026-05-05 at 4 36 46 PM" src="https://github.com/user-attachments/assets/f920c107-cf95-4fb3-945b-038a42d08951" />
 
