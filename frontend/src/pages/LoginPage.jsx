@@ -9,6 +9,7 @@ import {
   faEnvelope,
   faEyeSlash,
   faEye,
+  faLock,
 } from "@fortawesome/free-solid-svg-icons";
 import { faApple } from "@fortawesome/free-brands-svg-icons";
 
@@ -16,52 +17,42 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [mode, setMode] = useState("login"); // login | signup
+  const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  // 🔹 Handle token from OAuth redirect
   useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token");
-
-  if (token) {
-    setToken(token);
-
-    // 🔥 remove token from URL
-    window.history.replaceState({}, document.title, "/login");
-
-    navigate("/dashboard");
-  }
-}, [navigate]);
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    if (token) {
+      setToken(token);
+      window.history.replaceState({}, document.title, "/login");
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const title = useMemo(
-    () => (mode === "login" ? "Login" : "Create account"),
-    [mode],
+    () => (mode === "login" ? "Welcome back" : "Create account"),
+    [mode]
   );
 
   async function onSubmit(e) {
     e.preventDefault();
     setError("");
     setBusy(true);
-
     try {
       const path = mode === "login" ? "/api/auth/login" : "/api/auth/signup";
-
       const data = await apiFetch(path, {
-  method: "POST",
-  body: JSON.stringify({ email, password }),
-});
-
-console.log("LOGIN RESPONSE:", data); // 🔥 ADD THIS
-
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+      console.log("LOGIN RESPONSE:", data);
       if (!data.token) {
         toast.error(data?.error || data?.message || "Invalid email or password");
         return;
       }
-
-      setToken(data.token); // store JWT in localStorage
+      setToken(data.token);
       navigate("/dashboard");
     } catch (err) {
       console.log("ERROR:", err);
@@ -72,99 +63,114 @@ console.log("LOGIN RESPONSE:", data); // 🔥 ADD THIS
   }
 
   return (
-    <div className="wrapper">
-      <div className="outerContainer">
-        <div className="card" style={{ backgroundColor: "#27272A", transform: "none" }}>
-          <div className="title" style={{ color: "white" }}>{title}</div>
-          <div className="muted" style={{ marginBottom: 14, color: "#fff" }}>
-            {mode === "login" ? "We Are Happy To See You Again" : "Password must be at least 8 characters."}
+    <div className="login-page">
+      <div className="login-card">
+        {/* Header */}
+        <div className="login-header">
+          <div className="login-logo">📊</div>
+          <h1 className="login-title">{title}</h1>
+          <p className="login-subtitle">
+            {mode === "login"
+              ? "Good to see you again. Let's pick up where you left off."
+              : "Password must be at least 8 characters."}
+          </p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={onSubmit} className="login-form">
+          {/* Email */}
+          <div className="login-field">
+            <label className="login-label">Email</label>
+            <div className="login-input-wrapper">
+              <FontAwesomeIcon icon={faEnvelope} className="login-input-icon" />
+              <input
+                className="login-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                required
+                placeholder="you@example.com"
+              />
+            </div>
           </div>
 
-          <form onSubmit={onSubmit} className="row">
-            <div className="field input-wrapper">
-              <div className="password-wrapper">
-                <label style={{ color: "white" }}>Email</label>
-                <input 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  required
-                  placeholder="Enter your email"
-                />
-                <FontAwesomeIcon icon={faEnvelope} className="input-icon" id="env-icon" />
-              </div>
+          {/* Password */}
+          <div className="login-field">
+            <div className="login-label-row">
+              <label className="login-label">Password</label>
+              <a href="" className="login-forgot">Forgot password?</a>
             </div>
-
-            <div className="field input-wrapper">
-              <label style={{ color: "white" }}>Password</label>
-              <div className="password-wrapper" id="show-password">
-                <input
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  required
-                />
-                <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
-                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                </span>
-              </div>
-            </div>
-
-            <div className="forgot-password">
-              <a href="">Forgot Password</a>
-            </div>
-
-            {error && <div className="error">{error}</div>}
-
-            <button className="btn primary" disabled={busy} type="submit">
-              {busy ? "Please wait..." : title}
-            </button>
-          </form>
-
-          <div className="muted" style={{ marginTop: 12 }}>
-            {mode === "login" ? (
-              <button className="btn" onClick={() => setMode("signup")} type="button">
-                Need an account? Sign up
-              </button>
-            ) : (
-              <button className="btn" onClick={() => setMode("login")} type="button">
-                Have an account? Login
-              </button>
-            )}
-          </div>
-
-          <div className="or-divider">OR</div>
-
-          {/* Apple Login */}
-          <div className="login-box">
-            <div
-              className="login-other"
-              id="login-1"
-              onClick={() => {
-                window.location.href = "http://localhost:4000/api/auth/apple";
-              }}
-            >
-              <span id="apple-logo">
-                <FontAwesomeIcon icon={faApple} className="input-icon" />
+            <div className="login-input-wrapper">
+              <FontAwesomeIcon icon={faLock} className="login-input-icon" />
+              <input
+                className="login-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                required
+              />
+              <span
+                className="login-eye"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
               </span>
-              <span>Log in with Apple</span>
             </div>
           </div>
 
-          {/* Google Login */}
-          <div className="login-box">
-            <div
-              className="login-other"
-              id="login-2"
-              onClick={() => {
-                window.location.href = "http://localhost:4000/api/auth/google";
-              }}
-            >
-              <span id="a">G</span>
-              <span>Log in with Google</span>
-            </div>
-          </div>
+          {error && <div className="add-error">{error}</div>}
+
+          <button className="add-submit-btn" disabled={busy} type="submit">
+            {busy ? "⏳ Please wait..." : mode === "login" ? "🔐 Login" : "🚀 Create Account"}
+          </button>
+        </form>
+
+        {/* Toggle mode */}
+        <div className="login-toggle">
+          {mode === "login" ? (
+            <>
+              Don't have an account?{" "}
+              <button className="login-toggle-btn" onClick={() => setMode("signup")} type="button">
+                Sign up
+              </button>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <button className="login-toggle-btn" onClick={() => setMode("login")} type="button">
+                Login
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div className="login-divider">
+          <span>or continue with</span>
+        </div>
+
+        {/* OAuth buttons */}
+        <div className="login-oauth">
+          {/* Google */}
+          <button
+            className="login-oauth-btn"
+            type="button"
+            onClick={() => { window.location.href = "http://localhost:4000/api/auth/google"; }}
+          >
+            <span className="google-g">G</span>
+            <span>Google</span>
+          </button>
+
+          {/* Apple */}
+          <button
+            className="login-oauth-btn login-oauth-apple"
+            type="button"
+            onClick={() => { window.location.href = "http://localhost:4000/api/auth/apple"; }}
+          >
+            <FontAwesomeIcon icon={faApple} style={{ fontSize: 18 }} />
+            <span>Apple</span>
+          </button>
         </div>
       </div>
     </div>

@@ -1,0 +1,180 @@
+/* =====================
+   Add Problem Page
+   ===================== */
+
+.add-problem-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Two-column layout: form + preview */
+.add-problem-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 30px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .add-problem-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Form field */
+.add-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.add-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.add-input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 14px;
+  color: #111827;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.add-input:focus {
+  border-color: #2264f2;
+  box-shadow: 0 0 0 3px rgba(34, 100, 242, 0.1);
+  background: #fff;
+}
+
+/* Select with icon prefix */
+.add-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.add-select-prefix {
+  position: absolute;
+  left: 10px;
+  font-size: 15px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.add-select {
+  width: 100%;
+  padding: 10px 14px 10px 34px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-size: 14px;
+  color: #111827;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.add-select:focus {
+  border-color: #2264f2;
+  box-shadow: 0 0 0 3px rgba(34, 100, 242, 0.1);
+  background: #fff;
+}
+
+/* 3-column row */
+.add-row-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .add-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 2-column row */
+.add-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .add-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Submit button */
+.add-submit-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #2264f2 0%, #3567f1 100%);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 4px;
+}
+
+.add-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(34, 100, 242, 0.3);
+}
+
+.add-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error */
+.add-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border-left: 4px solid #b91c1c;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* Preview card */
+.add-preview-card {
+  position: sticky;
+  top: 20px;
+}
+
+.add-preview-label {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: -8px 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Difficulty callout in preview */
+.add-difficulty-callout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-left: 4px solid;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
