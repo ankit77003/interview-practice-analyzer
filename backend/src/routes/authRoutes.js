@@ -8,6 +8,8 @@ const { signup, login } = require("../controllers/authController");
 
 const router = express.Router();
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
 // 🔐 Create JWT helper
 function createJWT(user) {
   return jwt.sign(
@@ -42,7 +44,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "http://localhost:5173/login",
+    failureRedirect: `${FRONTEND_URL}/login`,
   }),
   async (req, res) => {
     try {
@@ -62,11 +64,11 @@ router.get(
 
       const token = createJWT(user);
 
-      res.redirect(`http://localhost:5173/login?token=${token}`);
+      res.redirect(`${FRONTEND_URL}/login?token=${token}`);
 
     } catch (err) {
       console.error("OAuth error:", err);
-      res.redirect("http://localhost:5173/login");
+      res.redirect(`${FRONTEND_URL}/login`);
     }
   }
 );
@@ -86,13 +88,13 @@ router.post(
   "/apple/callback",
   passport.authenticate("apple", {
     session: false,
-    failureRedirect: "http://localhost:5173/login",
+    failureRedirect: `${FRONTEND_URL}/login`,
   }),
   (req, res) => {
     const token = createJWT(req.user);
 
     // Redirect to frontend with token
-    res.redirect(`http://localhost:5173/login?token=${token}`);
+    res.redirect(`${FRONTEND_URL}/login?token=${token}`);
   }
 );
 

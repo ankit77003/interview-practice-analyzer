@@ -1,7 +1,7 @@
 // src/lib/api.js
 import { getToken, clearToken } from "./auth";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
 const logApiCall = (url) => {
   console.log(`API call to: ${url}`);

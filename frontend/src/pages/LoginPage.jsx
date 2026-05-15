@@ -1,7 +1,7 @@
 // src/pages/LoginPage.js
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiFetch } from "../lib/api";
+import { apiFetch, API_BASE_URL } from "../lib/api";
 import { setToken } from "../lib/auth";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -156,7 +156,7 @@ export function LoginPage() {
           <button
             className="login-oauth-btn"
             type="button"
-            onClick={() => { window.location.href = "http://localhost:4000/api/auth/google"; }}
+            onClick={() => { window.location.href = `${API_BASE_URL}/api/auth/google`; }}
           >
             <span className="google-g">G</span>
             <span>Google</span>
@@ -166,7 +166,7 @@ export function LoginPage() {
           <button
             className="login-oauth-btn login-oauth-apple"
             type="button"
-            onClick={() => { window.location.href = "http://localhost:4000/api/auth/apple"; }}
+            onClick={() => { window.location.href = `${API_BASE_URL}/api/auth/apple`; }}
           >
             <FontAwesomeIcon icon={faApple} style={{ fontSize: 18 }} />
             <span>Apple</span>
