@@ -2,7 +2,7 @@
 const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const { prisma } = require("../prismaClient");
+const User = require("../models/User");
 
 const { signup, login } = require("../controllers/authController");
 
@@ -48,19 +48,17 @@ router.get(
   }),
   async (req, res) => {
     try {
-      let user = await prisma.user.findUnique({
-        where: { email: req.user.email },
-      });
+      let user = await User.findOne({
+  email: req.user.email,
+});
 
       // 🔥 CREATE USER IF NOT EXISTS
-      if (!user) {
-        user = await prisma.user.create({
-          data: {
-            email: req.user.email,
-            passwordHash: "oauth", // dummy
-          },
-        });
-      }
+     if (!user) {
+  user = await User.create({
+    email: req.user.email,
+    passwordHash: "oauth",
+  });
+}
 
       const token = createJWT(user);
 

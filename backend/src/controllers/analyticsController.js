@@ -1,4 +1,4 @@
-const { prisma } = require("../prismaClient");
+const Problem = require("../models/Problem");
 
 function round1(n) {
   return Math.round(n * 10) / 10;
@@ -42,20 +42,32 @@ function buildSuggestions({ weakestTopic, weaknessReason, overallAccuracy }) {
 async function dashboard(req, res) {
   try {
     const userId = req.user.id;
-    const total = await prisma.problem.count({ where: { userId } });
-    const solved = await prisma.problem.count({ where: { userId, status: "SOLVED" } });
+    const total = await Problem.countDocuments({ userId });
+    const solved = await Problem.countDocuments({
+  userId,
+  status: "SOLVED",
+});
 
-    const byTopicRaw = await prisma.problem.groupBy({
-      by: ["topic"],
-      where: { userId },
-      _count: { _all: true },
-    });
+    const byTopicRaw = await Problem.aggregate([
+  { $match: { userId } },
+  {
+    $group: {
+      _id: "$topic",
+      count: { $sum: 1 },
+    },
+  },
+]);
+
 
     const byTopic = byTopicRaw
-      .map((t) => ({ topic: t.topic, count: t._count._all }))
-      .sort((a, b) => b.count - a.count);
+  .map((t) => ({ topic: t._id, count: t.count }))
+  .sort((a, b) => b.count - a.count);
 
-    return res.json({ totalProblems: total, solvedProblems: solved, byTopic });
+    return res.json({
+  totalProblems: total,
+  solvedProblems: solved,
+  byTopic,
+});
   } catch (err) {
     console.error("Dashboard error:", err);
     return res.status(500).json({ error: "Failed to load dashboard data" });
@@ -66,10 +78,9 @@ async function analytics(req, res) {
   try {
     const userId = req.user.id;
 
-    const problems = await prisma.problem.findMany({
-      where: { userId },
-      select: { topic: true, difficulty: true, timeTaken: true, status: true },
-    });
+    const problems = await Problem.find({ userId })
+  .select("topic difficulty timeTaken status")
+  .lean();
 
     if (problems.length === 0) {
       return res.json({
@@ -157,10 +168,9 @@ async function recommendations(req, res) {
   try {
     const userId = req.user.id;
 
-    const problems = await prisma.problem.findMany({
-      where: { userId },
-      select: { topic: true, status: true },
-    });
+    const problems = await Problem.find({ userId })
+  .select("topic status")
+  .lean();
 
     if (problems.length === 0) {
       return res.json({

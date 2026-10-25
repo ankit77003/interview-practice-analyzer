@@ -1,5 +1,5 @@
+const Problem = require("../models/Problem");
 const { z } = require("zod");
-const { prisma } = require("../prismaClient");
 
 const createProblemSchema = z.object({
   title: z.string().min(1).max(200),
@@ -36,17 +36,15 @@ async function createProblem(req, res) {
 
     const p = parsed.data;
 
-    const created = await prisma.problem.create({
-      data: {
-        userId: req.user.id,
-        title: p.title,
-        platform: p.platform,
-        difficulty: p.difficulty,
-        topic: p.topic,
-        timeTaken: p.time_taken,
-        status: p.status,
-      },
-    });
+   const created = await Problem.create({
+  userId: req.user.id,
+  title: p.title,
+  platform: p.platform,
+  difficulty: p.difficulty,
+  topic: p.topic,
+  timeTaken: p.time_taken,
+  status: p.status,
+});
 
     return res.status(201).json({ problem: created });
 
@@ -70,10 +68,9 @@ async function listProblems(req, res) {
       return res.status(401).json({ error: "User not authenticated" });
     }
 
-    const problems = await prisma.problem.findMany({
-      where: { userId: req.user.id },
-      orderBy: { createdAt: "desc" },
-    });
+    const problems = await Problem.find({
+  userId: req.user.id,
+}).sort({ createdAt: -1 });
 
     return res.json({ problems });
 
