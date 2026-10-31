@@ -437,6 +437,25 @@ color: #000000;
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(34, 100, 242, 0.3);
 }
+.ai-planner-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2D65F2, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(99, 91, 219, 0.18);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ai-planner-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(99, 91, 219, 0.25);
+}
 
 /* Stats Grid */
 .stats-grid {

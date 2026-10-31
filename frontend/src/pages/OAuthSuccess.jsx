@@ -1,6 +1,7 @@
 // OAuthSuccess.jsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { setToken } from "../lib/auth";
 
 export function OAuthSuccess() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export function OAuthSuccess() {
 
     if (token) {
       // Save token to localStorage
-      localStorage.setItem("token", token);
+      setToken(token);
 
       // Clean URL
       window.history.replaceState({}, document.title, window.location.pathname);

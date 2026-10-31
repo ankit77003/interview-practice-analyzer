@@ -84,10 +84,11 @@ async function analytics(req, res) {
 
     if (problems.length === 0) {
       return res.json({
+        topicInsights: [],
         weakestTopic: null,
         weakestTopicReason: null,
         overallAccuracy: 0,
-        averageTimeByDifficulty: { EASY: null, MEDIUM: null, HARD: null },
+        averageTimeByDifficulty: { EASY: 0, MEDIUM: 20, HARD: null },
         suggestions: buildSuggestions({ weakestTopic: null, weaknessReason: null, overallAccuracy: 0 }),
       });
     }
@@ -95,45 +96,76 @@ async function analytics(req, res) {
     const byTopic = new Map();
     let solvedCount = 0;
 
-    for (const p of problems) {
-      const entry = byTopic.get(p.topic) || { total: 0, solved: 0, solvedTimeSum: 0, solvedTimeCount: 0 };
-      entry.total += 1;
-      if (p.status === "SOLVED") {
-        entry.solved += 1;
-        solvedCount += 1;
-        entry.solvedTimeSum += p.timeTaken;
-        entry.solvedTimeCount += 1;
-      }
-      byTopic.set(p.topic, entry);
-    }
+for (const p of problems) {
+  const entry = byTopic.get(p.topic) || {
+    total: 0,
+    solved: 0,
+    solvedTimeSum: 0,
+    solvedTimeCount: 0,
+  };
 
-    const overallAccuracy = problems.length ? solvedCount / problems.length : 0;
+  entry.total += 1;
 
-    let maxAvgSolvedTime = 0;
-    for (const entry of byTopic.values()) {
-      const avgSolvedTime = entry.solvedTimeCount ? entry.solvedTimeSum / entry.solvedTimeCount : 0;
-      if (avgSolvedTime > maxAvgSolvedTime) maxAvgSolvedTime = avgSolvedTime;
-    }
-    if (maxAvgSolvedTime === 0) maxAvgSolvedTime = 1;
+  if (p.status === "SOLVED") {
+    entry.solved += 1;
+    solvedCount += 1;
+    entry.solvedTimeSum += p.timeTaken;
+    entry.solvedTimeCount += 1;
+  }
 
-    let weakestTopic = null;
-    let weakestScore = -1;
-    let weakestTopicReason = null;
+  byTopic.set(p.topic, entry);
+}
 
-    for (const [topic, entry] of byTopic.entries()) {
-      const accuracy = entry.total ? entry.solved / entry.total : 0;
-      const avgSolvedTime = entry.solvedTimeCount ? entry.solvedTimeSum / entry.solvedTimeCount : 0;
-      const timeFactor = avgSolvedTime / maxAvgSolvedTime;
-      const score = (1 - accuracy) * 0.7 + timeFactor * 0.3;
+const overallAccuracy = solvedCount / problems.length;
 
-      if (score > weakestScore) {
-        weakestScore = score;
-        weakestTopic = topic;
-        weakestTopicReason =
-          `Accuracy ${Math.round(accuracy * 100)}%` +
-          (entry.solvedTimeCount ? `, avg solved time ${round1(avgSolvedTime)} min` : ", no solved-time data yet");
-      }
-    }
+    // Find the slowest average solving time for normalization.
+const averageTimes = [...byTopic.values()]
+  .filter((entry) => entry.solvedTimeCount > 0)
+  .map((entry) => entry.solvedTimeSum / entry.solvedTimeCount);
+
+const maxAvgSolvedTime = Math.max(1, ...averageTimes);
+
+const topicInsights = [];
+
+for (const [topic, entry] of byTopic.entries()) {
+  const accuracy = entry.solved / entry.total;
+
+  const avgSolvedTime = entry.solvedTimeCount
+    ? entry.solvedTimeSum / entry.solvedTimeCount
+    : null;
+
+  const timeFactor = avgSolvedTime === null
+    ? 0
+    : Math.min(avgSolvedTime / maxAvgSolvedTime, 1);
+
+  const weaknessScore =
+    (1 - accuracy) * 0.7 + timeFactor * 0.3;
+
+  topicInsights.push({
+    topic,
+    attempts: entry.total,
+    solved: entry.solved,
+    accuracy: round1(accuracy * 100),
+    averageTime: avgSolvedTime === null
+      ? null
+      : round1(avgSolvedTime),
+    weaknessScore: round1(weaknessScore * 100),
+    needsMoreData: entry.total < 3,
+  });
+}
+
+topicInsights.sort(
+  (a, b) => b.weaknessScore - a.weaknessScore
+);
+
+const weakestTopic = topicInsights[0]?.topic ?? null;
+
+const weakestTopicReason = topicInsights.length
+  ? `Accuracy ${topicInsights[0].accuracy}%` +
+    (topicInsights[0].averageTime !== null
+      ? `, average solving time ${topicInsights[0].averageTime} min`
+      : ", no solved-time data yet")
+  : null;
 
     const byDifficulty = new Map([["EASY", []], ["MEDIUM", []], ["HARD", []]]);
     for (const p of problems) {
@@ -152,12 +184,13 @@ async function analytics(req, res) {
     });
 
     return res.json({
-      weakestTopic,
-      weakestTopicReason,
-      overallAccuracy: round1(overallAccuracy),
-      averageTimeByDifficulty,
-      suggestions,
-    });
+  weakestTopic,
+  weakestTopicReason,
+  overallAccuracy: round1(overallAccuracy),
+  averageTimeByDifficulty,
+  topicInsights,
+  suggestions,
+});
   } catch (err) {
     console.error("Analytics error:", err);
     return res.status(500).json({ error: "Failed to load analytics" });

@@ -1,0 +1,575 @@
+
+.ai-planner-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 24px 50px;
+  color: #20243a;
+  background: #f7f8fc;
+  min-height: 100vh;
+}
+
+.planner-topbar,
+.planner-section-heading,
+.planner-topic-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.planner-topbar {
+  margin-bottom: 26px;
+}
+
+.planner-back-link {
+  color: #626b82;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.planner-back-link:hover {
+  color: #635bdb;
+}
+
+.planner-status {
+  padding: 8px 13px;
+  border-radius: 30px;
+  background: #eeedff;
+  color: #635bdb;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.planner-hero {
+  padding: 38px;
+  border-radius: 20px;
+  background: linear-gradient(120deg, #eeedff, #f5f0ff, #edf6ff);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 35px;
+}
+
+.planner-eyebrow {
+  display: block;
+  color: #7466d9;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  margin-bottom: 10px;
+}
+
+.planner-hero h1 {
+  font-size: clamp(30px, 5vw, 42px);
+  margin: 0 0 12px;
+  color: #24213f;
+}
+
+.planner-hero p {
+  max-width: 620px;
+  color: #656b80;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.planner-hero-icon {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: white;
+  border-radius: 25px;
+  font-size: 48px;
+  box-shadow: 0 10px 30px rgba(65, 55, 130, 0.08);
+}
+
+.planner-section {
+  margin: 36px 0;
+}
+
+.planner-section-heading {
+  margin-bottom: 20px;
+}
+
+.planner-section-heading h2 {
+  margin: 0;
+  font-size: 23px;
+  color: #292d43;
+}
+
+.planner-section-heading p {
+  color: #7a8193;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.planner-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.planner-stat-card,
+.planner-topic-card,
+.planner-week-card {
+  background: white;
+  border: 1px solid #e9eaf2;
+  border-radius: 15px;
+  padding: 22px;
+  box-shadow: 0 5px 20px rgba(35, 39, 75, 0.035);
+}
+
+.planner-stat-icon {
+  font-size: 23px;
+}
+
+.planner-stat-card p {
+  color: #7a8193;
+  font-size: 13px;
+  margin: 14px 0 7px;
+}
+
+.planner-stat-card h3 {
+  font-size: 29px;
+  margin: 0;
+  color: #292d43;
+}
+
+.planner-topic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.planner-topic-card {
+  padding: 20px;
+}
+
+.planner-topic-heading h3 {
+  font-size: 17px;
+  margin: 0;
+}
+
+.topic-priority,
+.topic-normal {
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 6px 10px;
+}
+
+.topic-priority {
+  color: #c45c43;
+  background: #fff0eb;
+}
+
+.topic-normal {
+  color: #39876b;
+  background: #eaf8f1;
+}
+
+.planner-topic-accuracy {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 22px 0 12px;
+}
+
+.planner-topic-accuracy strong {
+  font-size: 27px;
+  color: #343750;
+}
+
+.planner-topic-accuracy span {
+  color: #8990a1;
+  font-size: 12px;
+}
+
+.planner-progress-track {
+  width: 100%;
+  height: 8px;
+  background: #eff0f6;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.planner-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7164e8, #a18af5);
+  border-radius: 20px;
+}
+
+.planner-topic-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #858b9c;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.planner-priority-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 25px;
+  border: 1px solid #f2d9c8;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #fff9f3, #fffefe);
+  margin: 35px 0;
+}
+
+.priority-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #ffeddb;
+  font-size: 23px;
+}
+
+.planner-priority-card h2 {
+  margin: 0 0 8px;
+  font-size: 25px;
+}
+
+.planner-priority-card p {
+  color: #73798a;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.planner-timeline {
+  position: relative;
+  padding-left: 12px;
+}
+
+.planner-timeline-item {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  padding-bottom: 30px;
+}
+
+.planner-timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 39px;
+  bottom: -2px;
+  width: 2px;
+  background: #dedaf9;
+}
+
+.timeline-marker {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #eeeaff;
+  color: #6559cf;
+  font-weight: 800;
+  z-index: 1;
+}
+
+.timeline-content {
+  flex: 1;
+  background: white;
+  border: 1px solid #e9eaf2;
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 5px 20px rgba(35, 39, 75, 0.035);
+}
+
+.timeline-phase {
+  font-size: 10px;
+  color: #7466d9;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.timeline-content h3 {
+  margin: 8px 0;
+  font-size: 17px;
+}
+
+.timeline-content p {
+  color: #73798a;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.planner-week-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.planner-week-card {
+  position: relative;
+  padding-left: 66px;
+}
+
+.week-card-number {
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: #eeeaff;
+  color: #6559cf;
+  font-weight: 800;
+  border-radius: 10px;
+}
+
+.planner-week-card > span {
+  color: #7466d9;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.planner-week-card p {
+  color: #60677b;
+  line-height: 1.6;
+  margin: 8px 0 0;
+  font-size: 14px;
+}
+
+.planner-revision-card {
+  display: flex;
+  gap: 16px;
+  padding: 23px;
+  background: #eff9f4;
+  border: 1px solid #d8efe2;
+  border-radius: 15px;
+  margin: 35px 0;
+}
+
+.revision-icon {
+  font-size: 25px;
+}
+
+.planner-revision-card h3 {
+  margin: 0 0 8px;
+  color: #276b50;
+}
+
+.planner-revision-card p {
+  margin: 0;
+  color: #527363;
+  line-height: 1.6;
+}
+
+.planner-footer {
+  text-align: center;
+  padding: 25px 10px;
+}
+
+.planner-footer p {
+  color: #777e91;
+  margin-bottom: 18px;
+}
+
+.planner-primary-btn,
+.planner-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: white;
+  background: #675bd7;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.planner-primary-btn:hover,
+.planner-back-btn:hover {
+  background: #5145c0;
+}
+
+.planner-state {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+  background: #f7f8fc;
+  color: #292d43;
+}
+
+.planner-state p {
+  color: #7a8193;
+  margin-bottom: 22px;
+}
+
+.planner-loader {
+  width: 38px;
+  height: 38px;
+  border: 4px solid #e8e6fb;
+  border-top-color: #675bd7;
+  border-radius: 50%;
+  animation: planner-spin 0.8s linear infinite;
+  margin-bottom: 18px;
+}
+
+@keyframes planner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .ai-planner-page {
+    padding: 20px 15px 35px;
+  }
+
+  .planner-hero {
+    padding: 25px;
+  }
+
+  .planner-hero-icon {
+    width: 65px;
+    height: 65px;
+    font-size: 32px;
+  }
+
+  .planner-stats-grid,
+  .planner-topic-grid,
+  .planner-week-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .planner-section-heading {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 450px) {
+  .planner-hero-icon {
+    display: none;
+  }
+
+  .planner-priority-card {
+    padding: 18px;
+  }
+
+  .planner-topbar {
+    align-items: flex-start;
+  }
+}
+.planner-checklist-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.planner-checklist-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.planner-checklist-progress div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.planner-checklist-progress span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.planner-checklist-progress h3 {
+  color: #2563eb;
+  font-size: 25px;
+}
+
+.planner-checklist-track {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+
+.planner-checklist-fill {
+  height: 100%;
+  background: #2563eb;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.planner-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.planner-task-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.planner-task-item:hover {
+  background: #f8fafc;
+}
+
+.planner-task-item input {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.planner-task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.planner-task-info strong {
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.planner-task-info span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.planner-task-status {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.planner-task-item.completed .planner-task-info strong {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.planner-task-item.completed .planner-task-status {
+  color: #16a34a;
+  font-weight: 600;
+}

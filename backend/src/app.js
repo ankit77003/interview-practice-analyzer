@@ -22,7 +22,23 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(cors({ origin: true }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://interview-practice-analyzer.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Origin not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: "256kb" }));
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");

@@ -7,6 +7,9 @@ function percent(n) {
 }
 
 export function DashboardPage() {
+  const [strategy, setStrategy] = useState(null);
+const [strategyLoading, setStrategyLoading] = useState(true);
+const [strategyError, setStrategyError] = useState("");
   const [dashboard, setDashboard] = useState(null);
   const [analytics, setAnalytics] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
@@ -58,6 +61,23 @@ export function DashboardPage() {
 
     load();
 
+apiFetch("/api/analytics/strategy")
+  .then((data) => {
+    if (alive) {
+      setStrategy(data?.strategy || null);
+    }
+  })
+  .catch((err) => {
+    if (alive) {
+      setStrategyError(err.message || "Failed to load strategy");
+    }
+  })
+  .finally(() => {
+    if (alive) {
+      setStrategyLoading(false);
+    }
+  });
+
     return () => {
       alive = false;
     };
@@ -88,9 +108,24 @@ export function DashboardPage() {
     <div className="dashboard-container">
       {/* Header */}
       <div className="dashboard-header">
-        <h1>📊 Your Dashboard</h1>
-        <Link to="/add" className="btn-add">+ Add Problem</Link>
-      </div>
+  <h1>📊 Your Dashboard</h1>
+
+  <div className="dashboard-header-actions">
+    
+
+    <Link to="/add" className="btn-add">
+      + Add Problem
+    </Link>
+<br />
+<br />
+
+    <Link to="/ai-planner" className="ai-planner-btn">
+      <span>✨</span>
+      AI DSA Planner (Based On Your Progress...)
+      <span>→</span>
+    </Link>
+  </div>
+</div>
 
       {/* Stats Grid */}
       <div className="stats-grid">
@@ -201,6 +236,8 @@ export function DashboardPage() {
           </div>
         </div>
       </div>
+
+   
 
       {/* Recent Problems */}
       <div className="dashboard-card full-width">

@@ -4,6 +4,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { AddProblemPage } from "./pages/AddProblemPage";
+import { AIPlannerPage } from "./pages/AIPlannerPage";
 import { isAuthed } from "./lib/auth";
 import { ToastContainer } from "react-toastify";
 import { OAuthSuccess } from "./pages/OAuthSuccess";
@@ -38,6 +39,7 @@ export default function App() {
           }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/ai-planner" element={<AIPlannerPage />} />
       </Routes>
     </Layout>
   );
